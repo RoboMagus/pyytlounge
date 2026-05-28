@@ -221,6 +221,7 @@ class YtLoungeApi:
             await self.event_listener.playback_speed_changed(PlaybackSpeedEvent(args[0]))
             await self.get_now_playing()
         elif event_type == "loungeStatus":
+            await self.event_listener.lounge_status_changed_raw(args[0])
             data: _LoungeStatus = args[0]
             devices: List[_Device] = json.loads(data["devices"])
             for device in devices:
@@ -241,6 +242,7 @@ class YtLoungeApi:
             pass  # no-op
         else:
             self._logger.debug("Unprocessed event %s %s", event_type, args)
+            await self.event_listener.unknown_event_raw(event_type, args)
 
     async def _process_events(self, events):
         for event in events:

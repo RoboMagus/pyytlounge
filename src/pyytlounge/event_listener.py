@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Any
 
 from .events import (
     NowPlayingEvent,
@@ -48,8 +49,14 @@ class EventListener(ABC):
     async def playback_speed_changed(self, event: PlaybackSpeedEvent) -> None:
         """Called when playback speed changes"""
 
+    async def lounge_status_changed_raw(self, event: Any) -> None:
+        """Called when launge status changes"""
+
     async def disconnected(self, event: DisconnectedEvent) -> None:
         """Called when the screen is no longer connected"""
+
+    async def unknown_event_raw(self, event_type: str, event: Any) -> None:
+        """Called when an unprocess event is received"""
 
 
 class _EmptyListener(EventListener):
